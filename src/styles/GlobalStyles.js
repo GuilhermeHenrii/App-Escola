@@ -1,5 +1,5 @@
 import styled, { createGlobalStyle } from 'styled-components';
-// estilo global da aplicação
+
 import * as colors from '../config/colors';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -39,25 +39,11 @@ export default createGlobalStyle`
   ul{
     list-style: none;
   }
-
-  // alterando a cor de fundo das notificações
-  body .Toastify .Toastify__toast-container .Toastify__toast--success {
-    background: black;
-  }
-
-  body .Toastify .Toastify__toast-container .Toastify__toast--error {
-    background: black;
-  }
-
-  // alterando a acor do botão de fechar a notificação
-  .Toastify__close-button {
-    color: white;
-  }
 `;
 
 export const Container = styled.section`
-  max-width: 360px;
-  background: #fff;
+  max-width: 480px;
+  background: lightgray;
   margin: 30px auto;
   padding: 30px;
   border-radius: 4px;

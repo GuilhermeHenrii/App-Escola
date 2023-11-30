@@ -1,27 +1,27 @@
 import React from 'react';
-import { /* BrowserRouter */ Router } from 'react-router-dom'; // Chamando broserRouter aqui para ele envolver todos os outros módulos, para facilitar o uso das rotas em toda a apicação
+import { BrowserRouter } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/lib/integration/react';
 
-// import Login from './pages/login';
-// não precisa chamar explicitamente o index
-
-import { Bounce, ToastContainer } from 'react-toastify'; // importando o Toast e o Bounce
-import history from './services/history'; // history com letra minuscula
-import GlobalStyles from './styles/GlobalStyles'; // todos os componentes react começam com letras maiusculas
+// import history from './services/history';
+import store, { persistor } from './store';
+import GlobalStyles from './styles/GlobalStyles';
 import Header from './components/Header';
-import Routes from './routes'; // importando o arquivo Routes que contem as configurações de roteamento da aplicação (react-router-dom)
+import Routes from './routes';
 
 function App() {
   return (
-    <Router history={history}>
-      <Header />
-      <Routes />
-      <GlobalStyles />
-      <ToastContainer // toast é um component react pré configurado para exibir notificações
-        autoClose={3000} // 3 segundos para a notificação fechar
-        className="toast-container"
-        transition={Bounce} // passando uma animação
-      />
-    </Router>
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
+        <BrowserRouter>
+          <Header />
+          <Routes />
+          <GlobalStyles />
+          <ToastContainer autoClose={3000} className="toast-container" />
+        </BrowserRouter>
+      </PersistGate>
+    </Provider>
   );
 }
 
