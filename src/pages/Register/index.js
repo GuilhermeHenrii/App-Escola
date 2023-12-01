@@ -53,10 +53,10 @@ export default function Register() {
       console.log(response);
       toast.success('Cadastro criado com sucesso');
       history.push('/login');
-      history.go(0);
+      history.go(0); // forçando o redirecionamento para '/login'
     } catch (e) {
       // pegando erro do backend
-      const status = get(e, 'response.status', 0);
+      const status = get(e, 'response.status', 0); // usando o lodash para fazer um get no caminho especificado, dentro dos erros (e)
       const errors = get(e, 'response.data.errors', []);
       console.log(status, errors);
 
@@ -100,7 +100,7 @@ export default function Register() {
           />
         </label>
 
-        <button type="submit" onClick={handleSubmit}>
+        <button type="submit" onSubmit={handleSubmit}>
           Create my account
         </button>
       </Form>
