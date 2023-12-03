@@ -2,6 +2,7 @@
 import { persistStore } from 'redux-persist';
 import { createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
+import { composeWithDevTools } from '@redux-devtools/extension';
 
 import rootReducer from './modules/rootReducer';
 import rootSaga from './modules/rootSaga';
@@ -28,7 +29,7 @@ const sagaMiddleware = createSagaMiddleware(); // Criado o Saga Middleware
 
 const store = createStore(
   persistedReducers(rootReducer), // envolveldo todos os nosso reducers (rootReducers) na função persistedReducers, que estamos retornando de reduxPersist.js
-  applyMiddleware(sagaMiddleware)
+  composeWithDevTools(applyMiddleware(sagaMiddleware))
 ); // store está recebendo o rootReducer e o Saga Middleware
 
 sagaMiddleware.run(rootSaga);
