@@ -38,5 +38,7 @@ module.exports = {
     // temporário
     'no-unused-vars': 'off',
     'no-empty-function': 'off',
+    'react/jsx-no-useless-fragment': 'off',
+    'react/prop-types': 'off',
   },
 };

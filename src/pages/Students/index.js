@@ -6,17 +6,21 @@ import { FaUserCircle, FaEdit, FaWindowClose } from 'react-icons/fa';
 import { Container } from '../../styles/GlobalStyles';
 import axios from '../../services/axios';
 import { StudentContainer, ProfilePicture } from './styled';
+import Loading from '../../components/Loading';
 
 export default function Students() {
   // useState recebe o valor inicial da variavel
   // e retorna o valor setado e a função para setar esse valor
   const [students, setStudents] = useState([]);
+  const [isLoading, setIsLoading] = useState(false); // setando valor padrao de isLoading
 
   useEffect(() => {
     // executa quando o componente funional é renderizado
     async function getData() {
+      setIsLoading(true); // antes de executar a requisição o loading será true
       const response = await axios.get('/alunos');
       setStudents(response.data);
+      setIsLoading(false); // apos a requisição isLoading será false e sumirá da tela
     }
 
     getData();
@@ -24,6 +28,8 @@ export default function Students() {
 
   return (
     <Container>
+      <Loading isLoading={isLoading} />
+
       <h1>Students test</h1>
 
       <StudentContainer>

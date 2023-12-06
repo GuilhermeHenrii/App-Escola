@@ -8,7 +8,7 @@ import axios from '../../../services/axios';
 
 function* loginRequest({ payload }) {
   // pegando apenas o objeto "payload" do payload
-  // delete axios.defaults.headers.Authorization;
+  // delete axios.defaults.headers.Authorization
   try {
     const response = yield call(axios.post, '/tokens', payload);
     yield put(actions.loginSuccess({ ...response.data }));
@@ -16,12 +16,17 @@ function* loginRequest({ payload }) {
     console.log(payload);
     console.log(axios.defaults.headers);
 
-    toast.success('Login efetuado com sucesso');
+    toast.success('Login efetuado com sucesso', {
+      autoClose: 2000,
+    });
 
     axios.defaults.headers.Authorization = `Bearer ${response.data.token}`;
 
     history.push(payload.prevPath);
-    history.go(0);
+
+    window.setTimeout(() => {
+      history.go(0);
+    }, 2000);
   } catch (e) {
     toast.error('Email ou senha inválidos.');
 

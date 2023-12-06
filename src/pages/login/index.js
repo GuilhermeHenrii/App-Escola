@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { isEmail } from 'validator';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { get } from 'lodash';
 
 import { Form } from './styled';
 import { Container } from '../../styles/GlobalStyles';
 import * as actions from '../../store/modules/auth/actions';
+import Loading from '../../components/Loading';
 
 export default function Login(props) {
   const dispatch = useDispatch();
 
   const prevPath = get(props, 'location.state.prevPath', '/'); // pegando o prevPath de myRoutes
+
+  const isLoading = useSelector((state) => state.auth.isLoading); // acessando isLoading de dentro do estado
 
   console.log(prevPath, props);
 
@@ -40,8 +43,10 @@ export default function Login(props) {
 
   return (
     <Container>
+      <Loading isLoading={isLoading} />
+      {/* passando isLoading, que é a variável
+      que armazena o valor do estado de isLoading */}
       <h1>Login</h1>
-
       <Form>
         <label htmlFor="email">
           <input

@@ -7,17 +7,19 @@ import { Container } from '../../styles/GlobalStyles';
 import { Form } from './styled';
 import axios from '../../services/axios';
 import history from '../../services/history';
+import Loading from '../../components/Loading';
 
 export default function Register() {
   const [nome, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   function containsNumber(string) {
     return /\d/.test(string);
   }
 
-  async function handleSubmit(event) {
+  async function handleClick(event) {
     event.preventDefault();
 
     let formErrors = false;
@@ -44,6 +46,8 @@ export default function Register() {
 
     if (formErrors) return;
 
+    setIsLoading(true);
+
     try {
       const response = await axios.post('/users/', {
         nome,
@@ -51,9 +55,16 @@ export default function Register() {
         email,
       });
       console.log(response);
-      toast.success('Cadastro criado com sucesso');
+      setIsLoading(false);
+      toast.success('Cadastro criado com sucesso', {
+        autoClose: 2000,
+      });
       history.push('/login');
-      history.go(0); // forçando o redirecionamento para '/login'
+
+      // definindo um tempo de dois segundos para o reload da pagina, para evitar o realod antes do toast aparecer
+      window.setTimeout(() => {
+        history.go(0); // forçando o redirecionamento para '/login'
+      }, 2000);
     } catch (e) {
       // pegando erro do backend
       const status = get(e, 'response.status', 0); // usando o lodash para fazer um get no caminho especificado, dentro dos erros (e)
@@ -62,11 +73,14 @@ export default function Register() {
 
       // renderizando erro do backend na tela
       errors.map((error) => toast.error(error));
+    } finally {
+      setIsLoading(false);
     }
   }
 
   return (
     <Container>
+      <Loading isLoading={isLoading} />
       <h1>Create your account</h1>
 
       <Form>
@@ -100,7 +114,7 @@ export default function Register() {
           />
         </label>
 
-        <button type="submit" onSubmit={handleSubmit}>
+        <button type="submit" onClick={handleClick}>
           Create my account
         </button>
       </Form>
