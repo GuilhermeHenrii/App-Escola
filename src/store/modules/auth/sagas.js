@@ -1,6 +1,7 @@
 import { call, put, all, takeLatest } from 'redux-saga/effects';
 import { toast } from 'react-toastify';
 import { get } from 'lodash';
+import { useRouteMatch } from 'react-router-dom';
 import history from '../../../services/history';
 import * as actions from './actions';
 import * as types from '../types';
@@ -44,7 +45,62 @@ function persistRehydrate({ payload }) {
   axios.defaults.headers.Authorization = `Bearer ${token}`;
 }
 
+// função que irá tratar a requisição para se registrar na aplicação
+// eslint-disable-next-line consistent-return
+function* registerRequest({ payload }) {
+  const { id, nome, email, password } = payload;
+  try {
+    if (id) {
+      yield call(axios.put, '/users', {
+        email,
+        nome,
+        password: password || undefined, // curto circuito
+      });
+      toast.success('Dados atualizados com sucesso');
+
+      // disparando a action para atualizar os dados
+      yield put(actions.registerUpdatedSuccess({ nome, email, password }));
+    } else {
+      yield call(axios.post, '/users', {
+        email,
+        nome,
+        password,
+      });
+      yield put(actions.registerCreatedSuccess());
+
+      history.push('/login');
+      window.setInterval(() => {
+        history.go(0);
+      }, 2000);
+
+      toast.success('Conta criada com sucesso');
+    }
+  } catch (e) {
+    const errors = get(e, 'response.data.errors', []);
+    const status = get(e, 'response.status', 0);
+
+    if (status === 401) {
+      toast.warn('Você precisa logar novamernte antes de continuar');
+      yield put(actions.loginFailure());
+      history.push('/login');
+      return window.setInterval(() => {
+        history.go(0);
+      }, 2500);
+    }
+
+    if (errors.length > 0) {
+      errors.map((error) => toast.error(error));
+    } else {
+      toast.error('Erro descohecido');
+    }
+
+    // disparando a action para se registrar na aplicação
+    yield put(actions.registerFailure());
+  }
+}
+
 export default all([
   takeLatest(types.LOGIN_REQUEST, loginRequest),
   takeLatest(types.PERSIST_REHYDRATE, persistRehydrate), // A ação REHYDRATE é enviada automaticamente pelo persistor durante o processo de reidratação.
+  takeLatest(types.REGISTER_RESQUEST, registerRequest),
 ]);

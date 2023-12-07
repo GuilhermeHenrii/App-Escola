@@ -3,17 +3,38 @@ import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { isEmail } from 'validator';
 import { get } from 'lodash';
+import { useSelector, useDispatch } from 'react-redux';
 import { Container } from '../../styles/GlobalStyles';
 import { Form } from './styled';
 import axios from '../../services/axios';
 import history from '../../services/history';
 import Loading from '../../components/Loading';
+import * as actions from '../../store/modules/auth/actions';
 
-export default function Register() {
+export default function Register(props) {
+  // const authData = useSelector((state) => console.log(state.auth)); // logando o estado da aplicação
+
+  // const prevPath = get(props, 'location.state.prevPath');
+  const dispatch = useDispatch();
+
+  // pegando os dados do localStorage
+  const emailStorage = useSelector((state) => state.auth.user.email);
+  const id = useSelector((state) => state.auth.user.id);
+  const nomeStorage = useSelector((state) => state.auth.user.nome);
+  const isLoading = useSelector((state) => state.auth.isLoading);
+
   const [nome, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
+
+  React.useEffect(() => {
+    // hook useEffect está lidando com o efeito colateral de manipular os dados do localStorage
+    if (!id) return;
+
+    setName(nomeStorage);
+    setEmail(emailStorage);
+  }, [emailStorage, id, nomeStorage]);
 
   function containsNumber(string) {
     return /\d/.test(string);
@@ -34,7 +55,7 @@ export default function Register() {
       toast.error('Campo "Name" não pode conter números');
     }
 
-    if (password.length < 6 || password.length > 50) {
+    if (!id && (password.length < 6 || password.length > 50)) {
       formErrors = true;
       toast.error('Senha deve ter entre 6 e 50 caracteres');
     }
@@ -46,42 +67,26 @@ export default function Register() {
 
     if (formErrors) return;
 
-    setIsLoading(true);
+    // setIsLoading(true);
 
-    try {
-      const response = await axios.post('/users/', {
+    // disparando o register com as informações do localStorage
+    // dentro dessa saga iremos criar a lógica de regitro e alteração de dados do usuário
+    // vale destacar que o mais viável seria separar esses componentes para suas respectivas funcionalidades
+    // pois sem essa diisão, o código ganha mais complexidade
+    dispatch(
+      actions.registerRequest({
         nome,
-        password,
         email,
-      });
-      console.log(response);
-      setIsLoading(false);
-      toast.success('Cadastro criado com sucesso', {
-        autoClose: 2000,
-      });
-      history.push('/login');
-
-      // definindo um tempo de dois segundos para o reload da pagina, para evitar o realod antes do toast aparecer
-      window.setTimeout(() => {
-        history.go(0); // forçando o redirecionamento para '/login'
-      }, 2000);
-    } catch (e) {
-      // pegando erro do backend
-      const status = get(e, 'response.status', 0); // usando o lodash para fazer um get no caminho especificado, dentro dos erros (e)
-      const errors = get(e, 'response.data.errors', []);
-      console.log(status, errors);
-
-      // renderizando erro do backend na tela
-      errors.map((error) => toast.error(error));
-    } finally {
-      setIsLoading(false);
-    }
+        password,
+        id,
+      })
+    );
   }
 
   return (
     <Container>
       <Loading isLoading={isLoading} />
-      <h1>Create your account</h1>
+      <h1>{id ? 'Editar dados' : 'Create your account'}</h1>
 
       <Form>
         <label htmlFor="name">
@@ -115,7 +120,7 @@ export default function Register() {
         </label>
 
         <button type="submit" onClick={handleClick}>
-          Create my account
+          {id ? 'Salvar' : 'Create my account'}
         </button>
       </Form>
     </Container>

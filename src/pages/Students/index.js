@@ -30,7 +30,7 @@ export default function Students() {
     <Container>
       <Loading isLoading={isLoading} />
 
-      <h1>Students test</h1>
+      <h1>Students</h1>
 
       <StudentContainer>
         {students.map((aluno) => (
