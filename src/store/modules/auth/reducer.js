@@ -27,6 +27,8 @@ export default function reducer(state = initialState, action) {
       return newState;
     }
     case types.LOGIN_FAILURE: {
+      // como estamos usando o login failure para deslogar o usuário
+      // devemos excluir o Authorization dos headers padrão
       delete axios.defaults.headers.Authorization;
       const newState = { ...initialState };
       return newState;
