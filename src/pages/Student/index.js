@@ -6,8 +6,10 @@ import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { isEmail, isFloat, isInt, isNumeric } from 'validator';
 // import { isFloat } from 'validator/lib/isFloat';
+import { FaEdit, FaUserCircle } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import { Container } from '../../styles/GlobalStyles';
-import { Form } from './styled';
+import { Form, ProfilePicture, Title } from './styled';
 import axios from '../../services/axios';
 import history from '../../services/history';
 import Loading from '../../components/Loading';
@@ -17,7 +19,7 @@ export default function Student({ match }) {
   // const { id } = props.match.params;
   // console.log(id);
   const dispatch = useDispatch();
-  const id = get(match, 'params.id', 0);
+  const id = get(match, 'params.id', '');
 
   const [name, setName] = React.useState('');
   const [lastName, setLastName] = React.useState('');
@@ -25,6 +27,7 @@ export default function Student({ match }) {
   const [age, setAge] = React.useState('');
   const [weight, setWeight] = React.useState('');
   const [height, setHeight] = React.useState('');
+  const [foto, setFoto] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(false);
 
   React.useEffect(() => {
@@ -37,6 +40,7 @@ export default function Student({ match }) {
         setIsLoading(true);
         const { data } = await axios.get(`/alunos/${id}`);
         const Foto = get(data, 'Fotos[0].url', ''); // pegando a url da ultima imagem enviada do aluno
+        setFoto(Foto);
 
         setName(data.nome);
         setLastName(data.sobrenome);
@@ -159,7 +163,19 @@ export default function Student({ match }) {
   return (
     <Container>
       <Loading isLoading={isLoading} />
-      <h1>{id ? 'Edit Student' : 'New Student'}</h1>
+      <Title>{id ? 'Edit Student' : 'New Student'}</Title>
+
+      {id && (
+        // container para a foto do aluno
+        <ProfilePicture>
+          {/* Se a foto tiver uma url true, será renderizada, caso contrário, um icone será renderizado */}
+          {foto ? <img src={foto} alt={name} /> : <FaUserCircle size={180} />}
+          <Link to={`/fotos/${id}`}>
+            {/* Na mesma div da foto, terá um ícone para a edição da mesma, que enviará uma requisição para o servidor, na url que é responsável por criar uma nova foto e tratra-la */}
+            <FaEdit size={24} />
+          </Link>
+        </ProfilePicture>
+      )}
 
       <Form onSubmit={handleSubmit}>
         <label htmlFor="name">

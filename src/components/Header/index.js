@@ -44,7 +44,9 @@ export default function Header() {
       )}
 
       {/* Ícone para informar usuario logado */}
-      {isLoggedIn && <RiRadioButtonLine size={24} color="#33cc33" />}
+      {isLoggedIn && (
+        <RiRadioButtonLine size={24} color="#33cc33" title="Online" />
+      )}
     </Nav>
   );
 }
