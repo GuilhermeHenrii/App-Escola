@@ -80,7 +80,7 @@ function* registerRequest({ payload }) {
     const status = get(e, 'response.status', 0);
 
     if (status === 401) {
-      toast.warn('Você precisa logar novamernte antes de continuar');
+      toast.warn('Você precisa logar novamente antes de continuar');
       yield put(actions.loginFailure());
       history.push('/login');
       return window.setInterval(() => {

@@ -2,11 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { get } from 'lodash'; // lodash será responsável de tratar, caso um aluno não possua uma foto
 import { FaUserCircle, FaEdit, FaWindowClose } from 'react-icons/fa';
+import { MdAdd } from 'react-icons/md';
 
 import { toast } from 'react-toastify';
 import { Container } from '../../styles/GlobalStyles';
 import axios from '../../services/axios';
-import { StudentContainer, ProfilePicture } from './styled';
+import {
+  StudentContainer,
+  ProfilePicture,
+  NewStudentLink,
+  ContainerTitle,
+  Title,
+} from './styled';
 import Loading from '../../components/Loading';
 import history from '../../services/history';
 
@@ -37,7 +44,10 @@ export default function Students() {
       const confirm = window.confirm(
         `Tem certeza que deseja excluir o(a) aluno(a) ${aluno.nome} ?`
       );
-      if (!confirm) return;
+      if (!confirm) {
+        setIsLoading(false);
+        return;
+      }
 
       const deletedStudent = await axios.delete(`/alunos/${aluno.id}`);
       console.log(deletedStudent);
@@ -68,7 +78,13 @@ export default function Students() {
     <Container>
       <Loading isLoading={isLoading} />
 
-      <h1>Students</h1>
+      <ContainerTitle>
+        <Title>Students</Title>
+
+        <NewStudentLink to="/aluno/">
+          <MdAdd />
+        </NewStudentLink>
+      </ContainerTitle>
 
       <StudentContainer>
         {students.map((aluno) => (

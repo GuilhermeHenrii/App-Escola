@@ -1,4 +1,14 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+
+export const ContainerTitle = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const Title = styled.h1``;
+
+export const NewStudentLink = styled(Link)``;
 
 export const StudentContainer = styled.div`
   margin-top: 15px;
