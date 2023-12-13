@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch } from 'react-router-dom';
 
 import MyRoute from './MyRoute';
-import Login from '../pages/Login';
+import Login from '../pages/Login/index';
 import Photos from '../pages/Photos';
 import Register from '../pages/Register';
 import Student from '../pages/Student';
