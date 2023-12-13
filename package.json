@@ -2,7 +2,7 @@
   "name": "react-base",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://34.151.198.237/",
+  "homepage": "https://escola.devgui.tech/",
   "dependencies": {
     "@redux-devtools/extension": "^3.2.6",
     "@testing-library/jest-dom": "^5.17.0",
