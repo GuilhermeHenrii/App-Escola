@@ -26,7 +26,7 @@ export default function Register(props) {
   const [nome, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  // const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingComponent, setIsLoadingComponent] = useState(false);
 
   React.useEffect(() => {
     // hook useEffect está lidando com o efeito colateral de manipular os dados do localStorage
@@ -83,9 +83,32 @@ export default function Register(props) {
     );
   }
 
+  const handleDeleteUser = async (e) => {
+    e.preventDefault();
+
+    if (!id) {
+      toast.error('Não foi possivel deletar a sua conta');
+    }
+
+    try {
+      setIsLoadingComponent(true);
+      const response = await axios.delete(`/users/`);
+      setIsLoadingComponent(false);
+      toast.success('Conta deletada com sucesso');
+      window.setTimeout(() => {
+        dispatch(actions.loginFailure());
+        history.push('/');
+        history.go(0);
+      }, 2500);
+    } catch (err) {
+      console.log(e);
+    }
+  };
+
   return (
     <Container>
       <Loading isLoading={isLoading} />
+      <Loading isLoading={isLoadingComponent} />
       <h1>{id ? 'Editar dados' : 'Create your account'}</h1>
 
       <Form>
@@ -121,6 +144,9 @@ export default function Register(props) {
 
         <button type="submit" onClick={handleClick}>
           {id ? 'Salvar' : 'Create my account'}
+        </button>
+        <button type="submit" onClick={handleDeleteUser} id="deleteUser">
+          Deletar minha conta
         </button>
       </Form>
     </Container>

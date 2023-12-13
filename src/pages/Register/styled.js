@@ -24,4 +24,8 @@ export const Form = styled.form`
       border: solid ${colors.primaryColor};
     }
   }
+
+  button#deleteUser {
+    margin-top: 10px;
+  }
 `;
