@@ -34,7 +34,7 @@ export default function Students() {
   }, []);
 
   const handleDelete = async (e, aluno, index) => {
-    e.persist();
+    // e.persist();
 
     try {
       setIsLoading(true);
