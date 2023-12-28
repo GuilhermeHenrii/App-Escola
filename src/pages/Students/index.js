@@ -18,11 +18,8 @@ import Loading from '../../components/Loading';
 import history from '../../services/history';
 
 export default function Students() {
-  // useState recebe o valor inicial da variavel
-  // e retorna o valor setado e a função para setar esse valor
   const [students, setStudents] = useState([]);
-  const [isLoading, setIsLoading] = useState(false); // setando valor padrao de isLoading
-  console.log(students);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     // executa quando o componente funional é renderizado
@@ -36,7 +33,9 @@ export default function Students() {
     getData();
   }, []);
 
-  const handleDelete = async (aluno, index) => {
+  const handleDelete = async (e, aluno, index) => {
+    e.persist();
+
     try {
       setIsLoading(true);
       // poderia implementar um modal aqui
@@ -50,17 +49,11 @@ export default function Students() {
       }
 
       const deletedStudent = await axios.delete(`/alunos/${aluno.id}`);
-      console.log(deletedStudent);
-
       const newStudents = [...students];
       newStudents.splice(index, 1);
       setStudents(newStudents);
       setIsLoading(false);
       toast.success('Aluno deletado com sucesso');
-
-      // window.setTimeout(() => {
-      //   history.go(0);
-      // }, 2000);
     } catch (error) {
       const status = (error, 'response.status', 0);
 
