@@ -30,7 +30,6 @@ export default function Students() {
     async function getData() {
       setIsLoading(true); // antes de executar a requisição o loading será true
       const response = await axios.get('/alunos');
-      console.log(response.data);
       setStudents(response.data);
       setIsLoading(false); // apos a requisição isLoading será false e sumirá da tela
     }
@@ -51,6 +50,7 @@ export default function Students() {
 
   const handleCloseModal = () => {
     setIsOpenModal(false);
+    console.log(students);
   };
 
   return (
