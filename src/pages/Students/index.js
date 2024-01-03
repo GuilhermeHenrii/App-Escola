@@ -16,10 +16,14 @@ import {
 } from './styled';
 import Loading from '../../components/Loading';
 import history from '../../services/history';
+import Modal from '../../components/Modal';
 
 export default function Students() {
   const [students, setStudents] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [selectedStudent, setSelectedStudent] = useState(null);
+  const [selectedIndexStudent, setSelectedIndexStudent] = useState(null);
 
   useEffect(() => {
     // executa quando o componente funional é renderizado
@@ -33,82 +37,69 @@ export default function Students() {
     getData();
   }, []);
 
-  const handleDelete = async (e, aluno, index) => {
-    // e.persist();
+  const handleDeleteAsk = (e, aluno, index) => {
+    e.preventDefault();
+    e.persist();
 
-    try {
-      setIsLoading(true);
-      // poderia implementar um modal aqui
-      // eslint-disable-next-line
-      const confirm = window.confirm(
-        `Tem certeza que deseja excluir o(a) aluno(a) ${aluno.nome} ?`
-      );
-      if (!confirm) {
-        setIsLoading(false);
-        return;
-      }
+    // tentar de alguma forma passar esses valores para o componente do modal
+    // passando valores do aluno e seu index para o modal
+    setSelectedStudent(aluno);
+    setSelectedIndexStudent(index);
+    setIsOpenModal(true);
+  };
 
-      const deletedStudent = await axios.delete(`/alunos/${aluno.id}`);
-      const newStudents = [...students];
-      newStudents.splice(index, 1);
-      setStudents(newStudents);
-      setIsLoading(false);
-      toast.success('Aluno deletado com sucesso');
-    } catch (error) {
-      const status = (error, 'response.status', 0);
-
-      if (status === 401) {
-        toast.error('Você precisa fazer login');
-      } else {
-        toast.error('Ocorreu um erro ao excluir aluno');
-      }
-
-      setIsLoading(false);
-    }
+  const handleCloseModal = () => {
+    setIsOpenModal(false);
   };
 
   return (
-    <Container>
-      <Loading isLoading={isLoading} />
+    <>
+      <Container>
+        {/* eslint-disable-next-line */}
+        {/* AQUI ESTAMOS INJETANDO OS VALORES DO ALUNO DENTRO DO COMPONENTE DE MODAL, DESSA FORMA CONSEGUIREMOS PASSAR OS VALORES DO ALUNO(E SEU INDICE) QUE ESTÁ SENDO DELETADO */}
+        <Modal
+          isOpen={isOpenModal}
+          aluno={selectedStudent}
+          index={selectedIndexStudent}
+          onClose={handleCloseModal}
+        />
+        <Loading isLoading={isLoading} />
+        <ContainerTitle>
+          <Title>Students</Title>
 
-      <ContainerTitle>
-        <Title>Students</Title>
+          <NewStudentLink to="/aluno/">
+            <MdAdd />
+          </NewStudentLink>
+        </ContainerTitle>
 
-        <NewStudentLink to="/aluno/">
-          <MdAdd />
-        </NewStudentLink>
-      </ContainerTitle>
+        <StudentContainer>
+          {students.map((aluno, index) => (
+            <div key={String(aluno.id)} className="student">
+              <ProfilePicture>
+                {get(aluno, 'Fotos[0].url', false) ? (
+                  <img src={`${aluno.Fotos[0].url}`} alt="" />
+                ) : (
+                  <FaUserCircle size={36} />
+                )}
+              </ProfilePicture>
 
-      <StudentContainer>
-        {students.map((aluno) => (
-          <div key={String(aluno.id)} className="student">
-            <ProfilePicture>
-              {get(aluno, 'Fotos[0].url', false) ? (
-                <img src={`${aluno.Fotos[0].url}`} alt="" />
-              ) : (
-                <FaUserCircle size={36} />
-              )}
-            </ProfilePicture>
-
-            <span>{aluno.nome}</span>
-            <span>{aluno.email}</span>
-            <Link to={`/aluno/${aluno.id}/edit`}>
-              <FaEdit size={16} />
-            </Link>
-            <Link
-              // aqui o onclick executa uma função anonima ja pegando o evento e prevenindo o mesmo
-              // assim, podemos disparar o evendo, prevenir, e chamar o handleDelete passando o id do aluno
-              onClick={(e) => {
-                e.preventDefault();
-                handleDelete(aluno, students.index);
-              }}
-              to={`/aluno/${aluno.id}/delete`}
-            >
-              <FaWindowClose size={16} />
-            </Link>
-          </div>
-        ))}
-      </StudentContainer>
-    </Container>
+              <span>{aluno.nome}</span>
+              <span>{aluno.email}</span>
+              <Link to={`/aluno/${aluno.id}/edit`}>
+                <FaEdit size={16} />
+              </Link>
+              <Link
+                // aqui o onclick executa uma função anonima ja pegando o evento e prevenindo o mesmo
+                // assim, podemos disparar o evendo, prevenir, e chamar o handleDelete passando o id do aluno
+                onClick={(e) => handleDeleteAsk(e, aluno, index)}
+                to={`/aluno/${aluno.id}/delete`}
+              >
+                <FaWindowClose size={16} />
+              </Link>
+            </div>
+          ))}
+        </StudentContainer>
+      </Container>
+    </>
   );
 }
