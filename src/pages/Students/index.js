@@ -37,6 +37,7 @@ export default function Students() {
     getData();
   }, []);
 
+  console.log(students);
   const handleDeleteAsk = (e, aluno, index) => {
     e.preventDefault();
     // e.persist();
@@ -50,7 +51,6 @@ export default function Students() {
 
   const handleCloseModal = () => {
     setIsOpenModal(false);
-    console.log(students);
   };
 
   return (
