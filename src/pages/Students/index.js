@@ -40,7 +40,7 @@ export default function Students() {
   console.log(students);
   const handleDeleteAsk = (e, aluno, index) => {
     e.preventDefault();
-    // e.persist();
+    e.persist();
 
     // tentar de alguma forma passar esses valores para o componente do modal
     // passando valores do aluno e seu index para o modal
@@ -54,53 +54,51 @@ export default function Students() {
   };
 
   return (
-    <>
-      <Container>
-        {/* eslint-disable-next-line */}
+    <Container>
+      {/* eslint-disable-next-line */}
         {/* AQUI ESTAMOS INJETANDO OS VALORES DO ALUNO DENTRO DO COMPONENTE DE MODAL, DESSA FORMA CONSEGUIREMOS PASSAR OS VALORES DO ALUNO(E SEU INDICE) QUE ESTÁ SENDO DELETADO */}
-        <Modal
-          isOpen={isOpenModal}
-          aluno={selectedStudent}
-          index={selectedIndexStudent}
-          onClose={handleCloseModal}
-        />
-        <Loading isLoading={isLoading} />
-        <ContainerTitle>
-          <Title>Students</Title>
+      {/* <Modal
+        isOpen={isOpenModal}
+        aluno={selectedStudent}
+        index={selectedIndexStudent}
+        onClose={handleCloseModal}
+      /> */}
+      <Loading isLoading={isLoading} />
+      <ContainerTitle>
+        <Title>Students</Title>
 
-          <NewStudentLink to="/aluno/">
-            <MdAdd />
-          </NewStudentLink>
-        </ContainerTitle>
+        <NewStudentLink to="/aluno/">
+          <MdAdd />
+        </NewStudentLink>
+      </ContainerTitle>
 
-        <StudentContainer>
-          {students.map((aluno, index) => (
-            <div key={String(aluno.id)} className="student">
-              <ProfilePicture>
-                {get(aluno, 'Fotos[0].url', false) ? (
-                  <img src={`${aluno.Fotos[0].url}`} alt="" />
-                ) : (
-                  <FaUserCircle size={36} />
-                )}
-              </ProfilePicture>
+      <StudentContainer>
+        {students.map((aluno, index) => (
+          <div key={String(aluno.id)} className="student">
+            <ProfilePicture>
+              {get(aluno, 'Fotos[0].url', false) ? (
+                <img src={`${aluno.Fotos[0].url}`} alt="" />
+              ) : (
+                <FaUserCircle size={36} />
+              )}
+            </ProfilePicture>
 
-              <span>{aluno.nome}</span>
-              <span>{aluno.email}</span>
-              <Link to={`/aluno/${aluno.id}/edit`}>
-                <FaEdit size={16} />
-              </Link>
-              <Link
-                // aqui o onclick executa uma função anonima ja pegando o evento e prevenindo o mesmo
-                // assim, podemos disparar o evendo, prevenir, e chamar o handleDelete passando o id do aluno
-                onClick={(e) => handleDeleteAsk(e, aluno, index)}
-                to={`/aluno/${aluno.id}/delete`}
-              >
-                <FaWindowClose size={16} />
-              </Link>
-            </div>
-          ))}
-        </StudentContainer>
-      </Container>
-    </>
+            <span>{aluno.nome}</span>
+            <span>{aluno.email}</span>
+            <Link to={`/aluno/${aluno.id}/edit`}>
+              <FaEdit size={16} />
+            </Link>
+            <Link
+              // aqui o onclick executa uma função anonima ja pegando o evento e prevenindo o mesmo
+              // assim, podemos disparar o evendo, prevenir, e chamar o handleDelete passando o id do aluno
+              onClick={(e) => handleDeleteAsk(e, aluno, index)}
+              to={`/aluno/${aluno.id}/delete`}
+            >
+              <FaWindowClose size={16} />
+            </Link>
+          </div>
+        ))}
+      </StudentContainer>
+    </Container>
   );
 }
