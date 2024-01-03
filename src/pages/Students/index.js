@@ -39,7 +39,7 @@ export default function Students() {
 
   const handleDeleteAsk = (e, aluno, index) => {
     e.preventDefault();
-    e.persist();
+    // e.persist();
 
     // tentar de alguma forma passar esses valores para o componente do modal
     // passando valores do aluno e seu index para o modal

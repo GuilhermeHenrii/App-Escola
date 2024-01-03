@@ -31,6 +31,11 @@ export default function Modal({ isOpen, aluno, index, onClose }) {
     getData();
   }, []);
 
+  const handleNoClick = () => {
+    // eslint-disable-next-line
+    onClose();
+  };
+
   const handleYesClick = async () => {
     try {
       onClose();
@@ -52,10 +57,6 @@ export default function Modal({ isOpen, aluno, index, onClose }) {
       }
       setIsLoading(false);
     }
-  };
-  const handleNoClick = () => {
-    // eslint-disable-next-line
-    onClose();
   };
 
   if (isOpen) {
