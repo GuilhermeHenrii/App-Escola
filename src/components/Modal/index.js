@@ -64,9 +64,7 @@ export default function Modal({ isOpen, aluno, index, onClose }) {
         <div>
           <span> Quer mesmo remover essse aluno(a) ? </span>
         </div>
-        {/* Por algum motivo, todos os alunos estão sendo deletados. Corrigir isso. */}
         {/* eslint-disable-next-line */}
-        {/* {isStudents.map((aluno, index) => { */}
         <div className="options">
           <GiConfirmed size={30} onClick={(e) => handleYesClick()} />
           <MdBlock size={30} onClick={handleNoClick} />
