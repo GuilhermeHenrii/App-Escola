@@ -19,7 +19,7 @@ import history from '../../services/history';
 import Modal from '../../components/Modal';
 
 export default function Students() {
-  const [students, setStudents] = useState(['']);
+  const [students, setStudents] = useState([' ']);
   const [isLoading, setIsLoading] = useState(false);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState(null);
