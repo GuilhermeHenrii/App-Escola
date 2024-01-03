@@ -19,7 +19,7 @@ import history from '../../services/history';
 import Modal from '../../components/Modal';
 
 export default function Students() {
-  const [students, setStudents] = useState([' ']);
+  const [students, setStudents] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState(null);
@@ -30,6 +30,7 @@ export default function Students() {
     async function getData() {
       setIsLoading(true); // antes de executar a requisição o loading será true
       const response = await axios.get('/alunos');
+      console.log(response.data);
       setStudents(response.data);
       setIsLoading(false); // apos a requisição isLoading será false e sumirá da tela
     }
