@@ -61,7 +61,7 @@ export default function Students() {
           isOpen={isOpenModal}
           aluno={selectedStudent}
           index={selectedIndexStudent}
-          onClose={handleCloseModal}
+          onClose={handleCloseModal()}
         />
         <Loading isLoading={isLoading} />
         <ContainerTitle>
