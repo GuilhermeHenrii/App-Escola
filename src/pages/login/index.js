@@ -66,7 +66,7 @@ export default function Login(props) {
         </label>
 
         <button type="submit" onClick={handleSubmit}>
-          Acessar
+          Entrar
         </button>
       </Form>
     </Container>

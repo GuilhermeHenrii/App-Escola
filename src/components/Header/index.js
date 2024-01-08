@@ -1,6 +1,13 @@
 import React from 'react';
-import { FaHome, FaSignInAlt, FaUserAlt, FaPowerOff } from 'react-icons/fa';
+import {
+  FaHome,
+  FaSignInAlt,
+  FaUserAlt,
+  FaPowerOff,
+  FaUserEdit,
+} from 'react-icons/fa';
 import { RiRadioButtonLine } from 'react-icons/ri';
+import { IoMdPersonAdd } from 'react-icons/io';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -28,9 +35,16 @@ export default function Header() {
       <Link to="/">
         <FaHome size={24} />
       </Link>
-      <Link to="/register">
-        <FaUserAlt size={24} />
-      </Link>
+
+      {isLoggedIn ? (
+        <Link to="/register">
+          <FaUserEdit size={24} />
+        </Link>
+      ) : (
+        <Link to="/register">
+          <IoMdPersonAdd size={24} />
+        </Link>
+      )}
 
       {/* Se o usuario estiver logado, renderiza o botao de logout que redireciona para a rota de logout */}
       {isLoggedIn ? (

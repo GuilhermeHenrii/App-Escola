@@ -163,7 +163,7 @@ export default function Student({ match }) {
   return (
     <Container>
       <Loading isLoading={isLoading} />
-      <Title>{id ? 'Edit Student' : 'New Student'}</Title>
+      <Title>{id ? 'Editar aluno' : 'Novo Aluno'}</Title>
 
       {id && (
         // container para a foto do aluno
@@ -179,69 +179,69 @@ export default function Student({ match }) {
 
       <Form onSubmit={handleSubmit}>
         <label htmlFor="name">
-          Name:
+          Nome:
           <input
             type="text"
             value={name}
             onChange={(e) => {
               setName(e.target.value);
             }}
-            placeholder="Name"
+            placeholder="nome"
           />
         </label>
         <label htmlFor="last-name">
-          Last name:
+          Sobrenome:
           <input
             type="text"
             value={lastName}
             onChange={(e) => {
               setLastName(e.target.value);
             }}
-            placeholder="Last Name"
+            placeholder="sobrenome"
           />
         </label>
         <label htmlFor="email">
-          Email:
+          E-mail:
           <input
             type="email"
             value={email}
             onChange={(e) => {
               setEmail(e.target.value);
             }}
-            placeholder="Email"
+            placeholder="e-mail"
           />
         </label>
         <label htmlFor="age">
-          Age:
+          Idade:
           <input
             type="number"
             value={age}
             onChange={(e) => {
               setAge(e.target.value);
             }}
-            placeholder="Age"
+            placeholder="idade"
           />
         </label>
-        <label htmlFor="weight">
-          Weight:
+        <label htmlFor="Peso">
+          Peso:
           <input
             type="text"
             value={weight}
             onChange={(e) => {
               setWeight(e.target.value);
             }}
-            placeholder="Weight"
+            placeholder="peso"
           />
         </label>
-        <label htmlFor="height">
-          Height
+        <label htmlFor="Altura">
+          Altura
           <input
             type="number"
             value={height}
             onChange={(e) => {
               setHeight(e.target.value);
             }}
-            placeholder="Height"
+            placeholder="altura"
           />
         </label>
         <button type="submit">Enviar</button>

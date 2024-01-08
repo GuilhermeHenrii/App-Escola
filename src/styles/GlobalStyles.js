@@ -22,7 +22,7 @@ export default createGlobalStyle`
   }
 
   button {
-    background-color: ${colors.primaryColor};
+    background-color: black;
     border: none;
     cursor: pointer;
     color: #fff;

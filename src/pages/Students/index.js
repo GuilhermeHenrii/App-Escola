@@ -64,7 +64,7 @@ export default function Students() {
       />
       <Loading isLoading={isLoading} />
       <ContainerTitle>
-        <Title>Students</Title>
+        <Title>Alunos</Title>
 
         <NewStudentLink to="/aluno/">
           <MdAdd />
@@ -85,7 +85,7 @@ export default function Students() {
             <span>{aluno.nome}</span>
             <span>{aluno.email}</span>
             <Link to={`/aluno/${aluno.id}/edit`}>
-              <FaEdit size={16} />
+              <FaEdit color="black" size={16} />
             </Link>
             <Link
               // aqui o onclick executa uma função anonima ja pegando o evento e prevenindo o mesmo
@@ -93,7 +93,7 @@ export default function Students() {
               onClick={(e) => handleDeleteAsk(e, aluno, index)}
               to={`/aluno/${aluno.id}/delete`}
             >
-              <FaWindowClose size={16} />
+              <FaWindowClose color="black" size={16} />
             </Link>
           </div>
         ))}

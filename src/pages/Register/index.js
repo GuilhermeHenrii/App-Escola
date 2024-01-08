@@ -10,6 +10,7 @@ import axios from '../../services/axios';
 import history from '../../services/history';
 import Loading from '../../components/Loading';
 import * as actions from '../../store/modules/auth/actions';
+import UserModal from '../../components/UserModal/index';
 
 export default function Register(props) {
   // const authData = useSelector((state) => console.log(state.auth)); // logando o estado da aplicação
@@ -27,6 +28,7 @@ export default function Register(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoadingComponent, setIsLoadingComponent] = useState(false);
+  const [isOpenModal, setIsOpenModal] = useState(false);
 
   React.useEffect(() => {
     // hook useEffect está lidando com o efeito colateral de manipular os dados do localStorage
@@ -83,71 +85,62 @@ export default function Register(props) {
     );
   }
 
-  const handleDeleteUser = async (e) => {
+  const handleAskDeleteUser = async (e) => {
     e.preventDefault();
+    e.persist();
+    setIsOpenModal(true);
+  };
 
-    if (!id) {
-      toast.error('Não foi possivel deletar a sua conta');
-    }
-
-    try {
-      setIsLoadingComponent(true);
-      const response = await axios.delete(`/users/`);
-      setIsLoadingComponent(false);
-      toast.success('Conta deletada com sucesso');
-      window.setTimeout(() => {
-        dispatch(actions.loginFailure());
-        history.push('/');
-        history.go(0);
-      }, 2500);
-    } catch (err) {
-      console.log(e);
-    }
+  const handleCloseModal = () => {
+    setIsOpenModal(false);
   };
 
   return (
     <Container>
+      <UserModal isOpen={isOpenModal} idUser={id} onClose={handleCloseModal} />
       <Loading isLoading={isLoading} />
       <Loading isLoading={isLoadingComponent} />
-      <h1>{id ? 'Editar dados' : 'Create your account'}</h1>
+      <h1>{id ? 'Editar dados' : 'Crie sua conta'}</h1>
 
       <Form>
         <label htmlFor="name">
-          Name:
+          Nome:
           <input
             type="text"
             value={nome}
             onChange={(e) => setName(e.target.value)} // usando o onChange para pegar alterações no input e declarando que a função setName, irá receber o value do evento disparo, no caso a inserção ou remoção de caracteres do input
-            placeholder="Your name"
+            placeholder="Seu nome"
           />
         </label>
 
         <label htmlFor="email">
-          Email:
+          E-mail:
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Your e-mail"
+            placeholder="Seu e-mail"
           />
         </label>
 
         <label htmlFor="password">
-          Password:
+          Senha:
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Your password"
+            placeholder="Sua senha"
           />
         </label>
 
         <button type="submit" onClick={handleClick}>
-          {id ? 'Salvar' : 'Create my account'}
+          {id ? 'Salvar' : 'Cria conta'}
         </button>
-        <button type="submit" onClick={handleDeleteUser} id="deleteUser">
-          Deletar minha conta
-        </button>
+        {id && (
+          <button type="submit" onClick={handleAskDeleteUser} id="deleteUser">
+            Deletar minha conta
+          </button>
+        )}
       </Form>
     </Container>
   );

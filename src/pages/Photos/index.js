@@ -76,7 +76,7 @@ export default function Photos({ match }) {
 
   return (
     <Container>
-      <Title>Photos</Title>
+      <Title>Envie sua foto</Title>
       <Loading isLoading={isLoading} />
 
       <Form>
