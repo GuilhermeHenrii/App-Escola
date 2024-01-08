@@ -70,7 +70,6 @@ export default function Modal({ isOpen, aluno, index, onClose }) {
           <GiConfirmed size={30} onClick={(e) => handleYesClick()} />
           <MdBlock size={30} onClick={handleNoClick} />
         </div>
-        ;{/* })} */}; ;
       </Container>
     );
   }
