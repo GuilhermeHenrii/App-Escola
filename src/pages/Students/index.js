@@ -37,6 +37,7 @@ export default function Students() {
     getData();
   }, []);
 
+  console.log(students);
   const handleDeleteAsk = (e, aluno, index) => {
     e.preventDefault();
     e.persist();
