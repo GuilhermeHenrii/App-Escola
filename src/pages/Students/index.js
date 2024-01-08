@@ -37,7 +37,6 @@ export default function Students() {
     getData();
   }, []);
 
-  console.log(students);
   const handleDeleteAsk = (e, aluno, index) => {
     e.preventDefault();
     e.persist();
@@ -57,12 +56,12 @@ export default function Students() {
     <Container>
       {/* eslint-disable-next-line */}
         {/* AQUI ESTAMOS INJETANDO OS VALORES DO ALUNO DENTRO DO COMPONENTE DE MODAL, DESSA FORMA CONSEGUIREMOS PASSAR OS VALORES DO ALUNO(E SEU INDICE) QUE ESTÁ SENDO DELETADO */}
-      {/* <Modal
+      <Modal
         isOpen={isOpenModal}
         aluno={selectedStudent}
         index={selectedIndexStudent}
         onClose={handleCloseModal}
-      /> */}
+      />
       <Loading isLoading={isLoading} />
       <ContainerTitle>
         <Title>Students</Title>
