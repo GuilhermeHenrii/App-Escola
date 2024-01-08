@@ -37,7 +37,6 @@ export default function Students() {
     getData();
   }, []);
 
-  console.log(students);
   const handleDeleteAsk = (e, aluno, index) => {
     e.preventDefault();
     e.persist();
@@ -88,17 +87,14 @@ export default function Students() {
             <Link to={`/aluno/${aluno.id}/edit`}>
               <FaEdit size={16} />
             </Link>
-            {/* <Link
+            <Link
               // aqui o onclick executa uma função anonima ja pegando o evento e prevenindo o mesmo
               // assim, podemos disparar o evendo, prevenir, e chamar o handleDelete passando o id do aluno
               onClick={(e) => handleDeleteAsk(e, aluno, index)}
               to={`/aluno/${aluno.id}/delete`}
-            > */}
-            <FaWindowClose
-              size={16}
-              onClick={(e) => handleDeleteAsk(e, aluno, index)}
-            />
-            {/* </Link> */}
+            >
+              <FaWindowClose size={16} />
+            </Link>
           </div>
         ))}
       </StudentContainer>
